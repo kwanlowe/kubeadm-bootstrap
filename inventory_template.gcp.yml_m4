@@ -1,0 +1,10 @@
+---
+plugin: gcp_compute
+projects:
+          - PROJECT
+auth_kind: serviceaccount
+service_account_file: KEYFILE
+
+groups:
+  workers: "'worker' in name"
+  bastion: "'bastion' in name"
