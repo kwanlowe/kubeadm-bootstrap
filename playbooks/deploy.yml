@@ -1,7 +1,7 @@
 - hosts: all
 
   vars:
-    kubernetes_allow_pods_on_master: false
+    kubernetes_allow_pods_on_master: true
 
   roles:
           - { role: '../roles/geerlingguy.docker' }

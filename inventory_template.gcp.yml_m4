@@ -8,3 +8,5 @@ service_account_file: KEYFILE
 groups:
   workers: "'worker' in name"
   bastion: "'bastion' in name"
+  master: "'bastion' in name"
+  kube_cluster: "'vm' in name"
