@@ -1,9 +1,10 @@
 # Kubeadm Bootstrap
 
-This is a set of files to bootstrap Kubeadm, which in turn is a tool to bootstrap Kubernetes.
+This is a thin layer over Jeff Geerling's excellent Ansible playbooks (https://github.com/geerlingguy/ansible-role-kubernetes).
+It uses Terraform to spin up the nodes and an Ansible dynamic inventory. 
 
-This creates a local installation of python, ansible and terraform in order to bootstrap a 
-Google Compute Platform Kubernetes installation. 
+Other helper functions in the Makefile create a local installation of python, ansible and terraform 
+and pass necessary variables to the Galaxy role. 
 
 There are other ways to do this, such as running a kubeadm container, but this repo is intended
 to demonstrate the setup.
@@ -12,3 +13,5 @@ to demonstrate the setup.
 
 
 ## Setup
+
+
