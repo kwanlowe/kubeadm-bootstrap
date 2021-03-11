@@ -7,9 +7,13 @@ GCP_BINARY_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google
 SCRATCH=tmp
 BINPATH=bin
 TFDIR=tf/nodes
-PRIVKEY=/home/kwan/.ssh/google_compute_engine
+PRIVKEY=~/.ssh/google_compute_engine
 INVENTORY_DIR=inventory
 ANSIBLE_INVENTORY=$(INVENTORY_DIR)/$(PROJECT).gcp.yml
+
+
+help:
+	@grep '^[a-z].*:$$' Makefile|tr -d ':'
 
 install-google-cloud-sdk:
 	mkdir -p $(SCRATCH) $(BINPATH)
@@ -18,11 +22,6 @@ install-google-cloud-sdk:
 	tar xf $(SCRATCH)/$(GCP_BASENAME) -C $(SCRATCH)/
 	mv $(SCRATCH)/google-cloud-sdk $(BINPATH)
 	
-install-checkov:
-	virtualenv -p $$(which python3) $(VENV)
-	$(VENV)/bin/pip install -r requirements.txt
-	mkdir -p $(ROLES_PATH)
-
 install-python-tools:
 	virtualenv -p $$(which python3) $(VENV)
 	$(VENV)/bin/pip install -r requirements.txt
@@ -40,7 +39,18 @@ generate-ansible-inventory:
 	m4 -DPROJECT=$(PROJECT) -DKEYFILE=$(KEYFILE) inventory_template.gcp.yml_m4 > $(ANSIBLE_INVENTORY)
 
 list-ansible-inventory:
+	echo "Listing inventory for $(ANSIBLE_INVENTORY):"
 	ansible-inventory --list -i $(ANSIBLE_INVENTORY)
+
+install-ansible-roles:
+	mkdir -p roles
+	ansible-galaxy install --roles-path ./roles geerlingguy.docker geerlinguy.kubernetes
+
+test-ansible:
+	ansible all -m ping -i $(ANSIBLE_INVENTORY) --flush-cache --key-file=$(KEYFILE)
+
+deploy:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) --become --become-user root --flush-cache --key-file=~$(KEYFILE)  playbooks/deploy.yml
 
 terraform-init:
 	cd $(TFDIR) && terraform init
@@ -54,6 +64,3 @@ generate-private-key:
 	mkdir -p playbooks/keys
 	test ! -f playbooks/keys/jumpoff && ssh-keygen -b 4096 -t rsa -f playbooks/keys/jumpoff 
 
-
-
-	
