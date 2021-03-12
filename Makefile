@@ -1,7 +1,7 @@
 PROJECT=myproject
 GCP_CREDS=~/path/to/google_application_creds.json
 VENV=python_venv
-ROLES_PATH=roles
+ROLES_PATH=playbooks/roles
 TF_BINARY_URL=https://releases.hashicorp.com/terraform/0.14.7/terraform_0.14.7_linux_amd64.zip
 GCP_BINARY_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-330.0.0-linux-x86_64.tar.gz
 SCRATCH=tmp
@@ -44,7 +44,7 @@ list-ansible-inventory:
 
 install-ansible-roles:
 	mkdir -p roles
-	ansible-galaxy install --roles-path $(ROLES) geerlingguy.docker geerlingguy.kubernetes
+	ansible-galaxy install --roles-path $(ROLES_PATH) geerlingguy.docker geerlingguy.kubernetes
 
 test-ansible:
 	ansible all -m ping --key-file=$(PRIVKEY)
