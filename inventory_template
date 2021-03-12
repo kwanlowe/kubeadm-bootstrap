@@ -1,0 +1,9 @@
+[workers]
+
+[workers:vars]
+kubernetes_role="node"
+
+[master]
+
+[master:vars]
+kubernetes_role="master"
