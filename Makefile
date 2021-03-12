@@ -37,13 +37,14 @@ install-terraform:
 generate-ansible-inventory:
 	mkdir -p $(INVENTORY_DIR)
 	m4 -DPROJECT=$(PROJECT) -DKEYFILE=$(GCP_CREDS) inventory_template.gcp.yml_m4 > $(ANSIBLE_INVENTORY)
+	cp inventory_template $(INVENTORY_DIR)/inventory
 
 list-ansible-inventory:
 	@ansible-inventory --list
 
 install-ansible-roles:
 	mkdir -p roles
-	ansible-galaxy install --roles-path $(ROLES) geerlingguy.docker geerlinguy.kubernetes
+	ansible-galaxy install --roles-path $(ROLES) geerlingguy.docker geerlingguy.kubernetes
 
 test-ansible:
 	ansible all -m ping --key-file=$(PRIVKEY)
