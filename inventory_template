@@ -7,4 +7,4 @@ kubernetes_role="node"
 
 [master:vars]
 kubernetes_role="master"
-kubernetes_enable_web_ui: true
+kubernetes_enable_web_ui=true

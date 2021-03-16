@@ -31,9 +31,28 @@ Your prompt should change to reflect the new environment.  To test:
 
 These should all return paths located in the ```kubeadm-bootstrap``` directory.
 
-Next, set the ```GOOGLE_APPLICATION_CREDENTIALS``` environment variable to the location of your GCP credentials.:
+## Configure GCP tools
+
+If you have not configured gcloud, run the following steps:
+
+Set the ```GOOGLE_APPLICATION_CREDENTIALS``` environment variable to the location of your GCP credentials.:
 
     export GOOGLE_APPLICATION_CREDENTIALS=~/path/to/projectname.json
+
+Configure your project:
+
+    gcloud config set project <project-name>
+
+    [e.g.]  gcloud config set project kubeadm-bootstrap
+
+    gcloud auth login
+
+A browser will open prompting for the associated Google account and list of permissions. Accepting will give access
+to the authentication.
+
+Login to a remote host to create the SSH keys (default in ```~/.ssh/google_compute_engine```.
+
+    gcloud compute ssh vm-bastion-001
 
 
 ## Configure Ansible
@@ -44,7 +63,7 @@ Generate the Ansible dynamic inventory file by running the following:
 
 For example:
 
-    make generate-ansible-inventory PROJECT=myproject GCP_CREDS=~/.ssh/myproject_train_123456.json
+    make generate-ansible-inventory PROJECT=myproject GCP_CREDS=~/.ssh/kubeadm-bootstrap_123456789.json
 
 This will create an ```inventory/hosts.gcp.yml``` file that will be used in subsequent commands. 
 Once the inventory is generated, test with:
